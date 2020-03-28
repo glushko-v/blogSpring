@@ -13,9 +13,13 @@
     <div th:each="el : ${post}" class="alert alert-info mt-2">
         <h3 th:text="${el.title}"/>
         <p th:text="${el.text}"/>
-        <p th:text="${el.views}"/>
-        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a>
-        <a th:href="'/blog/' + ${el.id} + '/remove'" class="btn btn-warning">Удалить</a>
+        <p><b>Просмотры: </b> <span th:text="${el.views}"/></p>
+        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
+     
+        <form th:action="'/blog/' +${el.id} + '/remove'" method="post">
+            <button class="btn btn-warning" type="submit">Удалить</button>
+        </form>
+
     </div>
 </div>
 <div th:insert="fragments/footer :: footer"></div>

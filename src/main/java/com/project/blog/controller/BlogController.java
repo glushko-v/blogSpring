@@ -52,4 +52,36 @@ public class BlogController {
         model.addAttribute("post", res);
         return "blog-details";
     }
+
+    @GetMapping("/blog/{id}/edit")
+    public String blogEdit(@PathVariable(value = "id") long id, Model model){
+        if(!postRepository.existsById(id)){
+            return "redirect:/blog";
+        }
+        Optional<Post> post = postRepository.findById(id);
+        ArrayList<Post> res = new ArrayList<>();
+        post.ifPresent(res::add);
+        model.addAttribute("post", res);
+        return "blog-edit";
+    }
+
+    @PostMapping("/blog/{id}/edit")
+    public String blogPostUpdate(@PathVariable(value="id") long id, @RequestParam String title, @RequestParam String announce, @RequestParam String text, Model model) throws Exception {
+
+        Post post = postRepository.findById(id).orElseThrow(Exception::new);
+        post.setText(title);
+        post.setAnnounce(announce);
+        post.setText(text);
+        postRepository.save(post);
+        return "redirect:/blog";
+    }
+
+    @PostMapping("/blog/{id}/remove")
+    public String blogPostDelete(@PathVariable(value="id") long id, Model model) throws Exception {
+
+        Post post = postRepository.findById(id).orElseThrow(Exception::new);
+
+        postRepository.delete(post);
+        return "redirect:/blog";
+    }
 }
